@@ -4,11 +4,11 @@ TrendSniper is a tool for collection, processing and storage of data to be used 
 
 ## Contributing
 
-**1. download a repository on GitHub.com to our machine**
+**1. download the repository on GitHub.com to our machine**
 
 `git clone https://github.com/xbvu/TrendSniper.git`
 
-**2. change into the `repo` directory by using terminal or a file manager**
+**2. change into the `TrendSniper` directory by using terminal or a file manager**
 
 `cd TrendSniper`
 
@@ -30,6 +30,6 @@ TrendSniper is a tool for collection, processing and storage of data to be used 
 
 `git commit -m "Added new-feature"`
 
-**8. push changes to github**
+**8. push changes to Github**
 
 `git push --set-upstream origin features/new-feature`
