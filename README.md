@@ -4,7 +4,7 @@ TrendSniper is a tool for collection, processing and storage of data to be used 
 
 ## Contributing
 
-**1. download the repository on GitHub.com to our machine**
+**1. download the repository on GitHub.com to your machine**
 
 `git clone https://github.com/xbvu/TrendSniper.git`
 
