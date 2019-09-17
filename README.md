@@ -5,7 +5,9 @@ TrendSniper is a tool for collection, processing and storage of data to be used 
 ## Contributing
 
 **1. set up Git on your machine**
+
 For Linux use your package manager to install "git".
+
 For Windows you can use [Git SCM](https://git-scm.com/download/win).
 
 **2. download the repository on GitHub.com to your machine**
