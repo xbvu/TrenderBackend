@@ -34,8 +34,8 @@ TrendSniper is a tool for collection, processing and storage of data to be used 
 
 `git push --set-upstream origin features/new-feature`
 
-**9. open the [branches](https://github.com/xbvu/TrendSniper/branches) page
+**9. open the [branches](https://github.com/xbvu/TrendSniper/branches) page**
 
-**10. select your branch under "Your branches" and click on "New pull request"
+**10. select your branch under "Your branches" and click on "New pull request"**
 
-**11. explain what your feature does and wait for approval or comments
+**11. explain what your feature does and wait for approval or comments**
