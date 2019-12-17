@@ -1,77 +1,22 @@
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
-import os
+# -*- coding: utf-8 -*-
+
 import datetime
+import os
+
+from flask import Flask, Blueprint, request, jsonify
+from flask_restful import Api, Resource
 from sqlalchemy.orm.exc import NoResultFound
+from flask_sqlalchemy import SQLAlchemy
 
-# Creating new Flask application.
-app = Flask(__name__)
-app.config.from_pyfile('config.py')
-db = SQLAlchemy(app)
+from trender.api.models import Group, Subgroup, Source, Entry
+from trender.extensions import db
+from flask import current_app as app
 
-"""
-Database structure:
-
-    GROUPS ->
-        SUBGROUPS ->
-            SOURCES ->
-                ENTRY
-    Example:
-        Group: Twitter
-        Subgroup: Hashtag
-        Source: #Bitcoin
-        Entry: "I bought some BTC #Bitcoin"
-
-    Example:
-        Group: Reddit
-        Subgroup: Subreddit
-        Source: /r/Bitcoin
-        Entry: "I bought Bitcoin"
-
-"""
+api = Blueprint('api', __name__, url_prefix='/api')
+api_wrap = Api(api)
 
 
-# Definition of source groups table.
-class Group(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    title = db.Column(db.Text, nullable=True)
-    description = db.Column(db.Text, nullable=False)
-    subgroups = db.relationship("Subgroup", backref="subgroups")
-
-# Definition of subgroups table.
-class Subgroup(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    title = db.Column(db.Text, nullable=True)
-    description = db.Column(db.Text, nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey(Group.id))
-    sources = db.relationship("Source", backref="sources2")
-
-# Definition of sources table.
-class Source(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    title = db.Column(db.Text, nullable=True)
-    description = db.Column(db.Text, nullable=False)
-    subgroup_id = db.Column(db.Integer, db.ForeignKey(Subgroup.id))
-    entries = db.relationship("Entry", backref="entries")
-
-# Definition of entries table.
-class Entry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    added_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    date = db.Column(db.DateTime, nullable=False)
-    body = db.Column(db.Text, nullable=False)
-    source_id = db.Column(db.Integer, db.ForeignKey(Source.id))
-    metatags = db.Column(db.Text, nullable=True)
-    
-def build_sample_db():
-    db.drop_all()
-    db.create_all()
-    return
-
-@app.route('/input/new_group', methods=['POST'])
+@api.route('/input/new_group', methods=['POST'])
 def new_group():
     arguments = {'name':'', 'title':'', 'description':''}
     for a in arguments.keys():
@@ -89,7 +34,7 @@ def new_group():
 
         return "Group '%s' successfully added!" % arguments['name']
 
-@app.route('/input/<group_name>/new_subgroup', methods=['POST'])
+@api.route('/input/<group_name>/new_subgroup', methods=['POST'])
 def new_subgroup(group_name):
     try:
         group = db.session.query(Group).filter(
@@ -116,7 +61,7 @@ def new_subgroup(group_name):
         db.session.commit()
         return "Source '%s' successfully added!" % arguments['name']
 
-@app.route('/input/<subgroup_name>/new_source', methods=['POST'])
+@api.route('/input/<subgroup_name>/new_source', methods=['POST'])
 def new_source(subgroup_name):
     try:
         subgroup = db.session.query(Subgroup).filter(
@@ -143,7 +88,7 @@ def new_source(subgroup_name):
         db.session.commit()
         return "Source '%s' successfully added!" % arguments['name']
     
-@app.route('/input/<source_name>/new_entry', methods=['POST'])
+@api.route('/input/<source_name>/new_entry', methods=['POST'])
 def new_entry(source_name):
     try:
         source = db.session.query(Source).filter(
@@ -168,13 +113,3 @@ def new_entry(source_name):
         db.session.commit()
         return "Entry '%s' successfully added!" % r1.id
 
-
-if __name__ == '__main__':
-    # Build a sample database, if one does not exist yet.
-    app_dir = os.path.realpath(os.path.dirname(__file__))
-    database_path = os.path.join(app_dir, app.config['DATABASE_FILE'])
-    if not os.path.exists(database_path):
-        build_sample_db()
-
-    # Start Flask application
-app.run(debug=True)

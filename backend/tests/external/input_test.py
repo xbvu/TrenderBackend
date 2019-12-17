@@ -4,7 +4,7 @@ from datetime import datetime
 # This is a test case for the data input API
 
 
-address = "http://127.0.0.1:5000"
+address = "http://127.0.0.1:5000/api"
 
 # Create a group
 def create_group(name, title, description):
@@ -78,4 +78,3 @@ if __name__ == '__main__':
                  datetime.timestamp(datetime.utcnow()),
                  "New to the club. I bought 0.0004 btc.",
                  "submission")
-    
