@@ -1,5 +1,6 @@
-import requests
 from datetime import datetime
+
+import requests
 
 # This is a test case for the data input API
 
