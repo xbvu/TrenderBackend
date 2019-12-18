@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask, render_template
+from flask import Flask
 
 from trender.config import DefaultConfig
 from trender.extensions import db
@@ -24,7 +24,7 @@ def create_app(config=None, app_name=None):
     configure_app(app, config)
     configure_hook(app)
     configure_blueprints(app)
-    #configure_logging(app)
+    configure_logging(app)
     configure_extensions(app)
     return app
 
@@ -42,22 +42,27 @@ def configure_app(app, config=None):
         app.config.from_object(config)
 
     # Use instance folder instead of env variables to make deployment easier.
-    #app.config.from_envvar('%s_APP_CONFIG' % DefaultConfig.PROJECT.upper(),
-    #silent=True)
+    # app.config.from_envvar('%s_APP_CONFIG' % DefaultConfig.PROJECT.upper(),
+    # silent=True)
 
 
 def configure_extensions(app):
-    # flask-sqlalchemy
+    # flask-sqlalchemy setup
     db.init_app(app)
     
-    import trender.api.models
-    
-    database_path = app.config['SQLALCHEMY_DATABASE_URI']
+    # database_path = app.config['SQLALCHEMY_DATABASE_URI']
+    database_path = INSTANCE_FOLDER_PATH+'/sources.sqlite'
     if not os.path.exists(database_path):
+        print("Database file not found on '{}'. Creating a database.".format(database_path))
+        app.logger.info("Database file not found on '{}'. Creating a database.".format(database_path))
         with app.app_context():
             db.drop_all()
             db.create_all()
+    else:
+        print("Database found on '{}'.".format(database_path))
+        app.logger.info("Database found on '{}'.".format(database_path))
     return
+
 
 def configure_blueprints(app):
     """Configure blueprints in views."""
@@ -97,10 +102,11 @@ def configure_logging(app):
     app.logger.addHandler(info_file_handler)
 
     # Testing
-    #print("Testing logging")
-    #app.logger.info("testing info.")
-    #app.logger.warn("testing warn.")
-    #app.logger.error("testing error.")
+    # print("Testing logging")
+    # app.logger.info("testing info.")
+    # app.logger.warn("testing warn.")
+    # app.logger.error("testing error.")
+
 
 def configure_hook(app):
 

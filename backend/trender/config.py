@@ -1,6 +1,6 @@
 import os
 
-from trender.utils import make_dir, INSTANCE_FOLDER_PATH
+from trender.utils import INSTANCE_FOLDER_PATH
 
 
 class BaseConfig(object):
@@ -25,6 +25,9 @@ class DefaultConfig(BaseConfig):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLITE for prototyping.
     SQLALCHEMY_DATABASE_URI='sqlite:///'+INSTANCE_FOLDER_PATH+'/sources.sqlite'
+
+    ES_HOST = "http://localhost:9200"
+    ES_INDEX = "trender"
     
     # MYSQL for production.
     
