@@ -7,6 +7,7 @@ from flask import Flask
 from trender.config import DefaultConfig
 from trender.extensions import db
 from trender.utils import make_dir, INSTANCE_FOLDER_PATH
+from flask_cors import CORS, cross_origin
 
 # For import *
 __all__ = ['create_app']
@@ -21,6 +22,7 @@ def create_app(config=None, app_name=None):
 
     app = Flask(app_name, instance_path=INSTANCE_FOLDER_PATH,
                 instance_relative_config=True)
+    cors = CORS(app)
     configure_app(app, config)
     configure_hook(app)
     configure_blueprints(app)

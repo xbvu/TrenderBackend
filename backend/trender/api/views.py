@@ -5,6 +5,7 @@ import datetime
 from flask import Blueprint, request, jsonify
 from flask import current_app as app
 from flask_restful import Api
+from flask_cors import CORS, cross_origin
 from sqlalchemy.orm.exc import NoResultFound
 
 from trender.api.elasticsearch import ES, Data, prepare_for_es
@@ -14,7 +15,9 @@ from trender.config import DefaultConfig
 from trender.extensions import db
 
 api = Blueprint('api', __name__, url_prefix='/api')
+CORS(api)
 api_wrap = Api(api)
+
 
 INDEX_ELASTIC = True
 if INDEX_ELASTIC:
@@ -24,6 +27,7 @@ if INDEX_ELASTIC:
      )
 
 @api.route('/input/new_group', methods=['POST'])
+@cross_origin()
 def new_group():
     arguments = {'name' : '', 'title' : '', 'description' : ''}
     for a in arguments.keys():
@@ -42,6 +46,7 @@ def new_group():
         return "Group '%s' successfully added!" % arguments['name']
 
 @api.route('/input/<group_name>/new_subgroup', methods=['POST'])
+@cross_origin()
 def new_subgroup(group_name):
     group_name = group_name.lower()
     try:
@@ -70,6 +75,7 @@ def new_subgroup(group_name):
         return "Source '%s' successfully added!" % arguments['name']
 
 @api.route('/input/<subgroup_name>/new_source', methods=['POST'])
+@cross_origin()
 def new_source(subgroup_name):
     subgroup_name = subgroup_name.lower()
     try:
@@ -98,6 +104,7 @@ def new_source(subgroup_name):
         return "Source '%s' successfully added!" % arguments['name']
     
 @api.route('/input/<source_name>/new_entry', methods=['POST'])
+@cross_origin()
 def new_entry(source_name):
     source_name = source_name.lower()
     try:
@@ -145,6 +152,7 @@ def new_entry(source_name):
 
 
 @api.route('/search', methods=['POST'])
+@cross_origin()
 def search():
     search_scopes = ['source', 'subgroup', 'group']
 
