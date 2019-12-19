@@ -22,5 +22,12 @@ TrenderBackend can be divided into several most important parts:
   - ElasticSearch insertion API. Most of the code for it is placed in [elasticsearch.py](https://github.com/xbvu/TrenderBackend/blob/master/backend/trender/api/elasticsearch.py)
   - Search class. Most of the code for it is placed in [search.py](https://github.com/xbvu/TrenderBackend/blob/master/backend/trender/api/search.py)
   - Database implementation. Most of the code for it is placed in [models.py](https://github.com/xbvu/TrenderBackend/blob/master/backend/trender/api/models.py)
+  - Tests. They can be found in [this directory](https://github.com/xbvu/TrenderBackend/tree/master/backend/tests/external)
   
+
   
+  **Scrapers**
+  
+Scrapers are to be placed [here](https://github.com/xbvu/TrenderBackend/tree/master/scrapers), during the demonstration phase, no scrapers were created.
+
+An example for creating scepers is available as [input_test.py](https://github.com/xbvu/TrenderBackend/blob/master/backend/tests/external/input_test.py)
